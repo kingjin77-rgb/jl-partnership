@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>법무법인 제이엘 파트너십 안내</title>
+<style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+
+:root{
+  --blue:#2563eb; --blue-d:#1d4ed8;
+  --green:#059669; --green-d:#047857;
+  --purple:#7c3aed; --purple-d:#6d28d9;
+  --slate-900:#0f172a; --slate-800:#1e293b; --slate-700:#334155;
+  --slate-600:#475569; --slate-500:#64748b; --slate-200:#e2e8f0;
+  --slate-100:#f1f5f9; --slate-50:#f8fafc;
+}
+*{margin:0; padding:0; box-sizing:border-box; font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+body{background:var(--slate-50); color:var(--slate-800); line-height:1.7; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+.wrap{max-width:960px; margin:0 auto; padding:32px 20px;}
+@media(min-width:768px){.wrap{padding:56px 24px;}}
+
+/* 애니메이션 키프레임 */
+@keyframes fadeUp{from{opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;} to{opacity:1;}}
+@keyframes scaleIn{from{opacity:0; transform:scale(.9) translateY(20px);} to{opacity:1; transform:scale(1) translateY(0);}}
+@keyframes pulse{0%,100%{opacity:1; transform:scale(1);} 50%{opacity:.4; transform:scale(.85);}}
+@keyframes shimmer{0%{background-position:-200% 0;} 100%{background-position:200% 0;}}
+@keyframes floatWm{0%,100%{transform:rotate(-22deg) translateY(0);} 50%{transform:rotate(-22deg) translateY(-6px);}}
+@keyframes popNum{0%{transform:scale(1);} 40%{transform:scale(1.18);} 100%{transform:scale(1);}}
+
+.reveal{opacity:0;}
+.reveal.show{animation:fadeUp .7s cubic-bezier(.22,.61,.36,1) forwards;}
+
+/* 상단 버튼 */
+.topbar{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:28px;}
+@media(min-width:768px){.topbar{justify-content:flex-end;}}
+.btn{border:none; cursor:pointer; font-weight:700; border-radius:9999px; padding:10px 22px; font-size:15px; color:#fff; transition:.2s; white-space:nowrap;}
+.btn:hover{box-shadow:0 8px 20px rgba(0,0,0,.15); transform:translateY(-1px);}
+.btn:active{transform:translateY(0);}
+.btn-blue{background:linear-gradient(135deg,var(--blue),var(--blue-d));}
+.btn-green{background:linear-gradient(135deg,var(--green),var(--green-d));}
+.btn-purple{background:linear-gradient(135deg,var(--purple),var(--purple-d));}
+.btn-gray{background:#94a3b8;}
+.btn-sm{padding:8px 16px; font-size:13px;}
+
+/* 복사 알림 */
+.toast{margin-bottom:24px; padding:14px; background:#d1fae5; border:1px solid #34d399; color:#065f46; border-radius:10px; text-align:center; font-weight:600; animation:fadeUp .4s ease;}
+
+/* 설정 패널 */
+.settings{background:linear-gradient(135deg,#f0f9ff,#f0fdf4); border:2px solid #e0e7ff; border-radius:20px; padding:24px; margin-bottom:32px; animation:fadeUp .4s ease;}
+.settings h3{font-size:22px; font-weight:800; color:var(--slate-900); margin-bottom:20px;}
+.grid2{display:grid; grid-template-columns:1fr; gap:18px;}
+@media(min-width:768px){.grid2{grid-template-columns:1fr 1fr;}}
+.field label{display:block; font-size:14px; font-weight:700; color:var(--slate-800); margin-bottom:8px;}
+.field input{width:100%; padding:11px 14px; border:1px solid #cbd5e1; border-radius:10px; background:#fff; font-size:15px; transition:.2s;}
+.field input:focus{outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.12);}
+.settings-actions{display:flex; gap:12px; margin-top:22px;}
+.settings-actions .btn{flex:1;}
+
+/* 헤더 */
+header{margin-bottom:60px; border-bottom:4px solid var(--slate-900); padding-bottom:32px;}
+header h1{font-size:34px; font-weight:900; color:var(--slate-900); line-height:1.25;}
+@media(min-width:768px){header h1{font-size:46px;}}
+header p{color:var(--slate-600); margin-top:22px; font-size:20px; font-weight:500;}
+@media(min-width:768px){header p{font-size:23px;}}
+
+/* 인사말 */
+.intro{margin-bottom:72px; font-size:16px; color:var(--slate-800); line-height:1.85;}
+@media(min-width:768px){.intro{font-size:18px;}}
+.intro p{margin-bottom:22px;}
+
+/* 통계 카드 */
+.stats{display:grid; grid-template-columns:1fr; gap:24px; margin-bottom:88px;}
+@media(min-width:768px){.stats{grid-template-columns:1fr 1fr 1fr;}}
+.stat{background:#fff; border:1px solid var(--slate-200); border-radius:24px; box-shadow:0 20px 25px -5px rgba(0,0,0,.08); transition:transform .3s, box-shadow .3s; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 24px; text-align:center;}
+@media(min-width:768px){.stat{padding:48px 24px;}}
+.stat:hover{transform:translateY(-8px); box-shadow:0 30px 40px -10px rgba(0,0,0,.15);}
+.stat.b{border-top:12px solid var(--blue);}
+.stat.g{border-top:12px solid var(--green);}
+.stat.p{border-top:12px solid var(--purple);}
+.stat .label{font-size:16px; font-weight:700; color:var(--slate-500); letter-spacing:.08em; margin-bottom:22px;}
+.stat .num{font-size:52px; font-weight:900; color:var(--slate-900); margin-bottom:14px; line-height:1;}
+@media(min-width:768px){.stat .num{font-size:68px;}}
+.stat .desc{font-size:17px; font-weight:700;}
+.stat.b .desc{color:var(--blue-d);} .stat.g .desc{color:var(--green-d);} .stat.p .desc{color:var(--purple-d);}
+
+/* 솔루션 섹션 */
+.sec-title{font-size:28px; font-weight:900; border-bottom:4px solid var(--blue); padding-bottom:22px; color:var(--slate-900); margin-bottom:20px;}
+@media(min-width:768px){.sec-title{font-size:36px;}}
+.sec-desc{font-size:16px; color:var(--slate-600); line-height:1.8; margin-bottom:38px; max-width:760px;}
+@media(min-width:768px){.sec-desc{font-size:17px;}}
+.sec-desc b{color:var(--blue-d); font-weight:700;}
+.solutions{display:grid; grid-template-columns:1fr; gap:22px; margin-bottom:88px;}
+@media(min-width:768px){.solutions{grid-template-columns:1fr 1fr 1fr;}}
+.sol{padding:26px; border-radius:24px; border:2px solid; display:flex; flex-direction:column; transition:transform .3s, box-shadow .3s;}
+.sol:hover{transform:translateY(-6px); box-shadow:0 24px 40px -12px rgba(0,0,0,.18);}
+.sol.b{background:#eff6ff; border-color:#dbeafe;}
+.sol.g{background:#ecfdf5; border-color:#d1fae5;}
+.sol.p{background:#f5f3ff; border-color:#ede9fe;}
+.sol .ico{font-size:34px; margin-bottom:12px;}
+.sol h3{font-size:21px; font-weight:800; margin-bottom:14px;}
+.sol.b h3{color:#1e3a8a;} .sol.g h3{color:#064e3b;} .sol.p h3{color:#4c1d95;}
+.sol p{color:var(--slate-700); font-size:15px; margin-bottom:24px; flex-grow:1;}
+.sol .preview-btn{background:#fff; font-weight:700; padding:10px 22px; border-radius:9999px; border:1px solid; font-size:14px; cursor:pointer; transition:.2s; align-self:flex-start;}
+.sol.b .preview-btn{color:var(--blue-d); border-color:#bfdbfe;}
+.sol.b .preview-btn:hover{background:var(--blue); color:#fff; transform:scale(1.04);}
+.sol.g .preview-btn{color:var(--green-d); border-color:#a7f3d0;}
+.sol.g .preview-btn:hover{background:var(--green); color:#fff; transform:scale(1.04);}
+.sol.p .preview-btn{color:var(--purple-d); border-color:#ddd6fe;}
+.sol.p .preview-btn:hover{background:var(--purple); color:#fff; transform:scale(1.04);}
+
+/* 담당자 */
+.contact{background:linear-gradient(135deg,var(--blue),var(--blue-d)); color:#fff; padding:36px; border-radius:24px; margin-bottom:60px; box-shadow:0 20px 40px rgba(37,99,235,.25);}
+@media(min-width:768px){.contact{padding:48px;}}
+.contact h3{font-size:26px; font-weight:800; margin-bottom:22px;}
+.contact p{font-size:17px; margin-bottom:14px;}
+@media(min-width:768px){.contact p{font-size:19px;}}
+
+/* 푸터 */
+footer{background:var(--slate-900); color:#fff; padding:40px 32px; border-radius:24px; text-align:center;}
+@media(min-width:768px){footer{padding:56px;}}
+footer .msg{font-size:16px; line-height:1.85; margin-bottom:28px; opacity:.92;}
+@media(min-width:768px){footer .msg{font-size:18px;}}
+footer .thanks{font-weight:900; font-size:30px; margin-bottom:20px;}
+@media(min-width:768px){footer .thanks{font-size:40px;}}
+footer .firm{font-size:21px; font-weight:500; opacity:.9;}
+
+/* 모달 */
+.overlay{position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; z-index:100; padding:16px; animation:fadeIn .25s ease;}
+.overlay.on{display:flex;}
+.modal{background:#fff; border-radius:24px; max-width:640px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:0 25px 50px -12px rgba(0,0,0,.35); animation:scaleIn .35s cubic-bezier(.22,.61,.36,1);}
+.modal-head{padding:26px; color:#fff; position:sticky; top:0; z-index:2; display:flex; justify-content:space-between; align-items:flex-start;}
+@media(min-width:768px){.modal-head{padding:32px;}}
+.modal-head.b{background:linear-gradient(135deg,var(--blue),var(--blue-d));}
+.modal-head.g{background:linear-gradient(135deg,var(--green),var(--green-d));}
+.modal-head.p{background:linear-gradient(135deg,var(--purple),var(--purple-d));}
+.modal-head h2{font-size:24px; font-weight:800;}
+@media(min-width:768px){.modal-head h2{font-size:30px;}}
+.modal-head .sub{margin-top:8px; opacity:.9; font-size:15px;}
+.modal-close{background:rgba(255,255,255,.15); border:none; color:#fff; font-size:20px; width:38px; height:38px; border-radius:9999px; cursor:pointer; flex-shrink:0; transition:.2s;}
+.modal-close:hover{background:rgba(255,255,255,.32); transform:rotate(90deg);}
+.modal-body{padding:26px; position:relative;}
+@media(min-width:768px){.modal-body{padding:32px;}}
+
+/* 브랜드 배지 (남용방지 표시) */
+.brand-badge{display:inline-flex; align-items:center; gap:6px; background:var(--slate-900); color:#fff; font-size:12px; font-weight:700; padding:6px 14px; border-radius:9999px; margin-bottom:22px; letter-spacing:.02em;}
+.brand-badge .dot{width:6px; height:6px; border-radius:50%; background:#38bdf8;}
+
+/* 워터마크 */
+.wm-host{position:relative; overflow:hidden;}
+.wm{position:absolute; top:50%; left:50%; transform:rotate(-22deg); transform-origin:center; font-size:30px; font-weight:900; color:rgba(15,23,42,.05); white-space:nowrap; pointer-events:none; user-select:none; z-index:0; margin-left:-140px; margin-top:-20px; animation:floatWm 5s ease-in-out infinite;}
+.wm-host > *{position:relative; z-index:1;}
+
+/* 모달-폼 미리보기 */
+.phone-card{max-width:400px; margin:0 auto; background:var(--slate-50); border:1px solid var(--slate-200); border-radius:24px; padding:26px; box-shadow:0 10px 30px rgba(0,0,0,.08);}
+.phone-card .pc-title{text-align:center; margin-bottom:22px;}
+.phone-card .pc-title h4{font-size:18px; font-weight:800; color:var(--slate-900);}
+.phone-card .pc-title span{font-size:13px; color:var(--slate-500);}
+.form-field{margin-bottom:16px;}
+.form-field label{display:block; font-size:14px; font-weight:700; color:var(--slate-700); margin-bottom:7px;}
+.form-field input,.form-field textarea{width:100%; padding:11px 14px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; background:#fff;}
+.form-field textarea{height:70px; resize:none;}
+.form-submit{width:100%; background:var(--blue); color:#fff; font-weight:700; padding:12px; border:none; border-radius:8px; cursor:pointer; margin-top:6px; transition:.2s;}
+.form-submit:hover{background:var(--blue-d);}
+.pc-foot{border-top:1px solid var(--slate-200); margin-top:18px; padding-top:14px; text-align:center; font-size:12px; color:var(--slate-500);}
+.feature-box{background:#eff6ff; border:1px solid #bfdbfe; border-radius:14px; padding:22px; margin-top:26px;}
+.feature-box h4{font-weight:800; color:#1e3a8a; margin-bottom:14px;}
+.feature-box li{list-style:none; display:flex; gap:8px; font-size:14px; color:var(--slate-700); margin-bottom:8px;}
+.feature-box li b{color:var(--blue);}
+
+/* 모달-대시보드 */
+.live-tag{display:inline-flex; align-items:center; gap:7px; background:#ecfdf5; color:var(--green-d); font-size:12px; font-weight:800; padding:5px 12px; border-radius:9999px; margin-bottom:16px;}
+.live-tag .ld{width:8px; height:8px; border-radius:50%; background:#10b981; animation:pulse 1.4s infinite;}
+.dash-title{text-align:center; margin-bottom:22px;}
+.dash-title h3{font-size:22px; font-weight:800; color:var(--slate-900);}
+.dash-title span{color:var(--slate-500);}
+.kpi{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:22px;}
+.kpi .k{border-radius:14px; padding:20px 10px; text-align:center;}
+.kpi .k.g{background:#ecfdf5; border:1px solid #a7f3d0;}
+.kpi .k.b{background:#eff6ff; border:1px solid #bfdbfe;}
+.kpi .k.p{background:#f5f3ff; border:1px solid #ddd6fe;}
+.kpi .k .kl{font-size:12px; font-weight:700; color:var(--slate-600); margin-bottom:8px;}
+.kpi .k .kv{font-size:26px; font-weight:900; display:inline-block;}
+@media(min-width:768px){.kpi .k .kv{font-size:32px;}}
+.kpi .k.g .kv{color:var(--green);} .kpi .k.b .kv{color:var(--blue);} .kpi .k.p .kv{color:var(--purple);}
+.kpi .k .kv.bump{animation:popNum .4s ease;}
+.progress-wrap{margin-bottom:22px;}
+.progress-head{display:flex; justify-content:space-between; margin-bottom:10px;}
+.progress-head b{color:var(--slate-900);}
+.progress-head .pct{color:var(--green); font-weight:800;}
+.bar{width:100%; background:var(--slate-200); border-radius:9999px; height:14px; overflow:hidden;}
+.bar>i{display:block; height:100%; width:0; border-radius:9999px; background:linear-gradient(90deg,#34d399,var(--green),#34d399); background-size:200% 100%; transition:width .8s cubic-bezier(.22,.61,.36,1); animation:shimmer 2.2s linear infinite;}
+.sim-controls{display:flex; gap:10px; justify-content:center; margin-bottom:24px; flex-wrap:wrap;}
+.dong-box{background:var(--slate-50); border-radius:14px; padding:22px;}
+.dong-box h4{font-weight:800; color:var(--slate-900); margin-bottom:18px;}
+.dong-row{margin-bottom:14px;}
+.dong-row .dr-top{display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px;}
+.dong-row .dr-top b{color:var(--slate-700);}
+.dong-row .dr-top span{color:var(--slate-500);}
+.bar-sm{width:100%; background:var(--slate-200); border-radius:9999px; height:9px; overflow:hidden;}
+.bar-sm>i{display:block; height:100%; width:0; background:var(--green); border-radius:9999px; transition:width .8s cubic-bezier(.22,.61,.36,1);}
+
+/* 모달-계산기 */
+.calc{max-width:480px; margin:0 auto;}
+.calc-sec{background:var(--slate-50); border:1px solid var(--slate-200); border-radius:16px; padding:22px; margin-bottom:18px;}
+.calc-sec > .cs-title{font-size:15px; font-weight:800; color:var(--slate-900); margin-bottom:14px; display:flex; align-items:center; gap:8px;}
+.calc-sec > .cs-title .tag{font-size:11px; background:var(--purple); color:#fff; padding:3px 9px; border-radius:9999px;}
+.calc label{display:block; font-size:13px; font-weight:700; color:var(--slate-700); margin-bottom:8px;}
+.calc input[type=number]{width:100%; padding:11px 14px; border:1px solid #cbd5e1; border-radius:10px; font-weight:700; font-size:15px;}
+.calc input[type=number]:focus{outline:none; border-color:var(--purple); box-shadow:0 0 0 3px rgba(124,58,237,.12);}
+.calc input[type=range]{width:100%; margin-top:12px; accent-color:var(--purple);}
+.calc .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+.calc-result{background:#fff; border:2px solid #ddd6fe; border-radius:14px; padding:22px; margin-top:6px;}
+.calc-result h3{font-weight:800; color:var(--slate-900); margin-bottom:14px; font-size:16px;}
+.calc-line{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--slate-200); font-size:14px;}
+.calc-line span{color:var(--slate-700);}
+.calc-line b{color:var(--slate-900);}
+.calc-total{display:flex; justify-content:space-between; align-items:center; padding:14px; border-radius:10px; margin-top:10px;}
+.calc-total.acq{background:#f5f3ff;}
+.calc-total.loan{background:#eff6ff;}
+.calc-total b{color:var(--slate-900); font-weight:800;}
+.calc-total .amt{font-size:19px; font-weight:900;}
+.calc-total.acq .amt{color:var(--purple);}
+.calc-total.loan .amt{color:var(--blue);}
+.calc-note{font-size:12px; color:var(--slate-500); margin-top:10px; line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <button class="btn btn-blue" onclick="toggleSettings()">⚙️ 설정</button>
+    <button class="btn btn-green" onclick="copyLink()">🔗 링크 복사</button>
+  </div>
+
+  <div id="toast" class="toast" style="display:none;"></div>
+
+  <div id="settings" class="settings" style="display:none;">
+    <h3>설정</h3>
+    <div class="grid2">
+      <div class="field"><label>아파트명</label><input id="s-apt" type="text"></div>
+      <div class="field"><label>담당자 이름</label><input id="s-name" type="text"></div>
+      <div class="field"><label>담당자 직급</label><input id="s-title" type="text"></div>
+      <div class="field"><label>담당자 휴대폰</label><input id="s-phone" type="tel"></div>
+    </div>
+    <div class="settings-actions">
+      <button class="btn btn-blue" onclick="saveSettings()">저장</button>
+      <button class="btn btn-gray" onclick="toggleSettings()">취소</button>
+    </div>
+  </div>
+
+  <header class="reveal">
+    <h1 id="h-apt">교산 푸르지오 더 퍼스트 아파트</h1>
+    <p>입주예정자협의회 및 입주민 여러분께</p>
+  </header>
+
+  <section class="intro reveal">
+    <p>안녕하십니까. 법무법인 제이엘입니다.</p>
+    <p>새집을 마련하고 입주를 기다리시는 요즘, 설렘과 함께 복잡한 등기 절차나 예상치 못한 하자 문제 등 다양한 고민도 있으실 거라 생각됩니다. 저희 법무법인 제이엘은 그러한 걱정을 덜어드리고, 입주 준비와 안정적인 정착을 돕기 위해 함께하고자 합니다.</p>
+    <p>저희는 다수의 입주예정자협의회와 협약을 체결하고, 단체등기·하자처리·설명회 진행·시공사 대응·금융협의 등 입주 전 과정에 걸쳐 실질적인 법률 서비스를 제공해 온 전문 법무법인입니다.</p>
+  </section>
+
+  <section class="stats reveal">
+    <div class="stat b"><div class="label">배상책임보험</div><div class="num" data-target="70" data-suffix="억">0억</div><div class="desc">업계 최대 규모 보장</div></div>
+    <div class="stat g"><div class="label">수임 단지</div><div class="num" data-target="600" data-suffix="+">0+</div><div class="desc">검증된 파트너십 실적</div></div>
+    <div class="stat p"><div class="label">전담 전문 인력</div><div class="num" data-target="37" data-suffix="명">0명</div><div class="desc">등기 전담팀 상시 운용</div></div>
+  </section>
+
+  <section class="reveal">
+    <h2 class="sec-title">입주예정자협의회 전용 프로그램 제공</h2>
+    <p class="sec-desc">법무법인 제이엘은 협의회 운영에 필요한 디지털 프로그램을 <b>자체 개발하여 협약 단지에 전용으로 제공</b>합니다. 아래는 대표 프로그램 예시이며, 이 외에도 단지별 상황에 맞춰 다양한 기능을 지원합니다.</p>
+    <div class="solutions">
+      <div class="sol b">
+        <div class="ico">📝</div>
+        <h3>위임징구 프로그램</h3>
+        <p>모바일 기반 비대면 위임장 징구 시스템</p>
+        <button class="preview-btn" onclick="openModal('mandate')">기능 미리보기</button>
+      </div>
+      <div class="sol g">
+        <div class="ico">📊</div>
+        <h3>대시보드 관리자</h3>
+        <p>위임 현황 실시간 통합 관리</p>
+        <button class="preview-btn" onclick="openModal('dashboard')">기능 미리보기</button>
+      </div>
+      <div class="sol p">
+        <div class="ico">🧮</div>
+        <h3>부동산·대출 계산기</h3>
+        <p>취득세·등기비용 및 대출 상환액 자동 계산</p>
+        <button class="preview-btn" onclick="openModal('calculator')">기능 미리보기</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact reveal">
+    <h3>추가 정보 및 상담</h3>
+    <p><strong id="c-title">변호사</strong> <span id="c-name">이지훈</span></p>
+    <p>📱 <span id="c-phone">010-1234-5678</span></p>
+    <p>궁금한 사항은 언제든 연락주세요!</p>
+  </section>
+
+  <footer class="reveal">
+    <p class="msg">저희 법무법인 제이엘은 입주민 여러분의 소중한 보금자리를 지키는 데 있어 단순한 절차 대행을 넘어, 입주 과정 전반의 안정성과 효율성을 높이는 든든한 법률 파트너가 되고자 합니다.</p>
+    <p class="thanks">감사합니다.</p>
+    <p class="firm">법무법인 제이엘</p>
+  </footer>
+</div>
+
+<!-- 위임징구 모달 -->
+<div id="m-mandate" class="overlay" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head b">
+      <div><h2>위임징구 프로그램</h2><div class="sub">모바일 비대면 위임장 징구 시스템</div></div>
+      <button class="modal-close" onclick="closeModalById('m-mandate')">✕</button>
+    </div>
+    <div class="modal-body wm-host">
+      <div class="wm">법무법인 제이엘</div>
+      <div class="brand-badge"><span class="dot"></span> 법무법인 제이엘 전용 프로그램 · JL Law</div>
+      <div class="phone-card">
+        <div class="pc-title"><h4 id="mod-apt-1">교산 푸르지오 더 퍼스트</h4><span>입주민 위임장 서명</span></div>
+        <div class="form-field"><label>성명</label><input type="text" placeholder="홍길동"></div>
+        <div class="form-field"><label>세대번호</label><input type="text" placeholder="000동 000호"></div>
+        <div class="form-field"><label>휴대폰</label><input type="tel" placeholder="010-0000-0000"></div>
+        <div class="form-field"><label>위임 내용</label><textarea placeholder="단체등기 진행에 동의합니다"></textarea></div>
+        <button class="form-submit">디지털 서명</button>
+        <div class="pc-foot" id="mod-mgr-1">담당: 변호사 이지훈<br>010-1234-5678</div>
+      </div>
+      <div class="feature-box">
+        <h4>주요 기능</h4>
+        <ul>
+          <li><b>✓</b> 모바일 최적화 인터페이스</li>
+          <li><b>✓</b> 디지털 서명 지원</li>
+          <li><b>✓</b> 실시간 데이터 동기화</li>
+          <li><b>✓</b> 높은 완성률 (평균 87%)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 대시보드 모달 -->
+<div id="m-dashboard" class="overlay" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head g">
+      <div><h2>대시보드 관리자</h2><div class="sub">위임 현황 실시간 통합 관리</div></div>
+      <button class="modal-close" onclick="closeModalById('m-dashboard')">✕</button>
+    </div>
+    <div class="modal-body wm-host">
+      <div class="wm">법무법인 제이엘</div>
+      <div class="brand-badge"><span class="dot"></span> 법무법인 제이엘 전용 프로그램 · JL Law</div>
+      <div style="text-align:center;"><span class="live-tag"><span class="ld"></span> LIVE · 실시간 집계</span></div>
+      <div class="dash-title"><h3 id="mod-apt-2">교산 푸르지오 더 퍼스트</h3><span>위임 현황 대시보드</span></div>
+      <div class="kpi">
+        <div class="k g"><div class="kl">위임률</div><div class="kv" id="kpi-rate">0%</div></div>
+        <div class="k b"><div class="kl">완료 세대</div><div class="kv" id="kpi-done">0</div></div>
+        <div class="k p"><div class="kl">미완료</div><div class="kv" id="kpi-left">0</div></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-head"><b>위임 진행률</b><span class="pct" id="prog-pct">0%</span></div>
+        <div class="bar"><i id="prog-bar"></i></div>
+      </div>
+      <div class="sim-controls">
+        <button class="btn btn-green btn-sm" onclick="simAdd(1)">＋ 위임 접수 1건</button>
+        <button class="btn btn-green btn-sm" onclick="simAdd(5)">＋ 위임 접수 5건</button>
+        <button class="btn btn-gray btn-sm" onclick="simReset()">↺ 초기화</button>
+      </div>
+      <div class="dong-box">
+        <h4>동별 위임 현황</h4>
+        <div id="dong-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 계산기 모달 -->
+<div id="m-calculator" class="overlay" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head p">
+      <div><h2>부동산·대출 계산기</h2><div class="sub">취득세·등기비용 + 대출 상환액</div></div>
+      <button class="modal-close" onclick="closeModalById('m-calculator')">✕</button>
+    </div>
+    <div class="modal-body wm-host">
+      <div class="wm">법무법인 제이엘</div>
+      <div class="brand-badge"><span class="dot"></span> 법무법인 제이엘 전용 프로그램 · JL Law</div>
+      <div class="calc">
+
+        <div class="calc-sec">
+          <div class="cs-title">🏠 취득세·등기비용 <span class="tag">부동산</span></div>
+          <label>매매가격 (원)</label>
+          <input id="calc-price" type="number" value="400000000" oninput="syncRange()">
+          <input id="calc-range" type="range" min="100000000" max="1500000000" step="10000000" value="400000000" oninput="syncNumber()">
+          <div class="calc-result">
+            <div class="calc-line"><span>취득세 (8%)</span><b id="r-acq"></b></div>
+            <div class="calc-line"><span>등록세 (2%)</span><b id="r-reg"></b></div>
+            <div class="calc-line"><span>감정평가비</span><b id="r-app"></b></div>
+            <div class="calc-total acq"><b>총 소요 비용</b><span class="amt" id="r-total"></span></div>
+          </div>
+        </div>
+
+        <div class="calc-sec">
+          <div class="cs-title">💳 대출 상환 계산 <span class="tag">대출</span></div>
+          <label>대출금액 (원)</label>
+          <input id="loan-amt" type="number" value="250000000" oninput="calcLoan()">
+          <input type="range" min="50000000" max="1000000000" step="10000000" value="250000000" oninput="document.getElementById('loan-amt').value=this.value; calcLoan();">
+          <div class="row2" style="margin-top:14px;">
+            <div><label>연 금리 (%)</label><input id="loan-rate" type="number" value="4.0" step="0.1" oninput="calcLoan()"></div>
+            <div><label>기간 (년)</label><input id="loan-year" type="number" value="30" oninput="calcLoan()"></div>
+          </div>
+          <div class="calc-result" style="margin-top:16px;">
+            <div class="calc-line"><span>월 상환액 (원리금균등)</span><b id="l-month"></b></div>
+            <div class="calc-line"><span>총 이자</span><b id="l-interest"></b></div>
+            <div class="calc-total loan"><b>총 상환액</b><span class="amt" id="l-total"></span></div>
+          </div>
+          <p class="calc-note">※ 원리금균등상환 기준 예상치입니다. 실제 조건(우대금리·중도상환·거치기간 등)에 따라 달라질 수 있으며, 정확한 상담은 담당자에게 문의해 주세요.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ▼▼▼ 배포 후 이 한 줄만 본인 웹 주소로 바꾸세요 (끝에 / 없이) ▼▼▼
+   예: 'https://kingjin77-rgb.github.io/jl-partnership'
+   비워두면 현재 열려있는 위치(로컬 file:// 포함)를 사용합니다. */
+var BASE_URL = '';
+
+var config = {
+  aptName: '교산 푸르지오 더 퍼스트',
+  managerName: '이지훈',
+  managerTitle: '변호사',
+  managerPhone: '010-1234-5678'
+};
+
+function applyConfig(){
+  document.getElementById('h-apt').textContent = config.aptName + ' 아파트';
+  document.getElementById('c-title').textContent = config.managerTitle;
+  document.getElementById('c-name').textContent = config.managerName;
+  document.getElementById('c-phone').textContent = config.managerPhone;
+  document.getElementById('mod-apt-1').textContent = config.aptName;
+  document.getElementById('mod-apt-2').textContent = config.aptName;
+  document.getElementById('mod-mgr-1').innerHTML = '담당: ' + config.managerTitle + ' ' + config.managerName + '<br>' + config.managerPhone;
+}
+
+function toggleSettings(){
+  var p = document.getElementById('settings');
+  if(p.style.display === 'none'){
+    document.getElementById('s-apt').value = config.aptName;
+    document.getElementById('s-name').value = config.managerName;
+    document.getElementById('s-title').value = config.managerTitle;
+    document.getElementById('s-phone').value = config.managerPhone;
+    p.style.display = 'block';
+  } else {
+    p.style.display = 'none';
+  }
+}
+
+function saveSettings(){
+  config.aptName = document.getElementById('s-apt').value || config.aptName;
+  config.managerName = document.getElementById('s-name').value || config.managerName;
+  config.managerTitle = document.getElementById('s-title').value || config.managerTitle;
+  config.managerPhone = document.getElementById('s-phone').value || config.managerPhone;
+  applyConfig();
+  document.getElementById('settings').style.display = 'none';
+}
+
+function copyLink(){
+  var params = new URLSearchParams({
+    apt: config.aptName, manager: config.managerName,
+    title: config.managerTitle, phone: config.managerPhone
+  });
+  var base = BASE_URL ? BASE_URL : (window.location.origin + window.location.pathname);
+  var url = base + '?' + params.toString();
+  var toast = document.getElementById('toast');
+  function show(msg){ toast.textContent = msg; toast.style.display='block'; setTimeout(function(){toast.style.display='none';},2500); }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(function(){show('링크가 복사되었습니다!');}).catch(function(){prompt('아래 링크를 복사하세요:', url);});
+  } else {
+    prompt('아래 링크를 복사하세요:', url);
+  }
+}
+
+/* 모달 */
+function openModal(id){
+  document.getElementById('m-'+id).classList.add('on');
+  if(id === 'dashboard'){ setTimeout(renderDash, 120); }
+}
+function closeModalById(id){ document.getElementById(id).classList.remove('on'); }
+function closeModal(e){ e.currentTarget.classList.remove('on'); }
+
+/* 숫자 카운트업 */
+function countUp(el, target, dur, suffix){
+  suffix = suffix || ''; dur = dur || 1000;
+  var startTime = null;
+  function step(ts){
+    if(!startTime) startTime = ts;
+    var p = Math.min((ts - startTime)/dur, 1);
+    var eased = 1 - Math.pow(1-p, 3);
+    el.textContent = Math.round(eased * target) + suffix;
+    if(p < 1) requestAnimationFrame(step); else el.textContent = target + suffix;
+  }
+  requestAnimationFrame(step);
+}
+
+/* 대시보드 상태 */
+var TOTAL = 250;
+var dongs = [
+  {name:'1동', total:60, done:42},
+  {name:'2동', total:65, done:36},
+  {name:'3동', total:62, done:32},
+  {name:'4동', total:63, done:39}
+];
+function dashTotals(){
+  var done = 0, tot = 0;
+  dongs.forEach(function(d){ done += d.done; tot += d.total; });
+  return {done:done, total:tot, rate: Math.round(done/tot*100)};
+}
+function renderDash(){
+  var t = dashTotals();
+  countUp(document.getElementById('kpi-rate'), t.rate, 900, '%');
+  countUp(document.getElementById('kpi-done'), t.done, 900, '');
+  countUp(document.getElementById('kpi-left'), t.total - t.done, 900, '');
+  document.getElementById('prog-pct').textContent = t.rate + '%';
+  setTimeout(function(){ document.getElementById('prog-bar').style.width = t.rate + '%'; }, 60);
+  var html = '';
+  dongs.forEach(function(d){
+    var r = Math.round(d.done/d.total*100);
+    html += '<div class="dong-row"><div class="dr-top"><b>'+d.name+'</b><span>'+r+'% ('+d.done+'/'+d.total+'세대)</span></div><div class="bar-sm"><i data-w="'+r+'"></i></div></div>';
+  });
+  document.getElementById('dong-list').innerHTML = html;
+  setTimeout(function(){
+    var bars = document.querySelectorAll('#dong-list .bar-sm > i');
+    bars.forEach(function(b){ b.style.width = b.getAttribute('data-w') + '%'; });
+  }, 80);
+}
+function bump(id){ var el=document.getElementById(id); el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+function simAdd(n){
+  for(var i=0;i<n;i++){
+    var pool = dongs.filter(function(d){ return d.done < d.total; });
+    if(pool.length === 0) break;
+    var pick = pool[Math.floor(Math.random()*pool.length)];
+    pick.done++;
+  }
+  var t = dashTotals();
+  document.getElementById('kpi-rate').textContent = t.rate + '%'; bump('kpi-rate');
+  document.getElementById('kpi-done').textContent = t.done; bump('kpi-done');
+  document.getElementById('kpi-left').textContent = (t.total - t.done); bump('kpi-left');
+  document.getElementById('prog-pct').textContent = t.rate + '%';
+  document.getElementById('prog-bar').style.width = t.rate + '%';
+  var rows = document.querySelectorAll('#dong-list .dong-row');
+  dongs.forEach(function(d, idx){
+    if(!rows[idx]) return;
+    var r = Math.round(d.done/d.total*100);
+    rows[idx].querySelector('.dr-top span').textContent = r+'% ('+d.done+'/'+d.total+'세대)';
+    rows[idx].querySelector('.bar-sm > i').style.width = r + '%';
+  });
+}
+function simReset(){
+  dongs = [
+    {name:'1동', total:60, done:42},
+    {name:'2동', total:65, done:36},
+    {name:'3동', total:62, done:32},
+    {name:'4동', total:63, done:39}
+  ];
+  renderDash();
+}
+
+/* 계산기 */
+function won(n){ return new Intl.NumberFormat('ko-KR',{style:'currency',currency:'KRW',maximumFractionDigits:0}).format(n); }
+function calcTax(){
+  var price = Number(document.getElementById('calc-price').value) || 0;
+  var acq = Math.round(price*0.08), reg = Math.round(price*0.02), app = 150000;
+  document.getElementById('r-acq').textContent = won(acq);
+  document.getElementById('r-reg').textContent = won(reg);
+  document.getElementById('r-app').textContent = won(app);
+  document.getElementById('r-total').textContent = won(acq+reg+app);
+}
+function syncRange(){ document.getElementById('calc-range').value = document.getElementById('calc-price').value; calcTax(); }
+function syncNumber(){ document.getElementById('calc-price').value = document.getElementById('calc-range').value; calcTax(); }
+function calcLoan(){
+  var P = Number(document.getElementById('loan-amt').value) || 0;
+  var annual = Number(document.getElementById('loan-rate').value) || 0;
+  var years = Number(document.getElementById('loan-year').value) || 0;
+  var n = years * 12;
+  var r = annual / 100 / 12;
+  var monthly;
+  if(n <= 0){ monthly = 0; }
+  else if(r === 0){ monthly = P / n; }
+  else { monthly = P * r * Math.pow(1+r, n) / (Math.pow(1+r, n) - 1); }
+  monthly = Math.round(monthly);
+  var totalPay = monthly * n;
+  var interest = totalPay - P;
+  document.getElementById('l-month').textContent = won(monthly);
+  document.getElementById('l-interest').textContent = won(interest > 0 ? interest : 0);
+  document.getElementById('l-total').textContent = won(totalPay);
+}
+
+/* 스크롤 등장 애니메이션 + 통계 카운트업 */
+function initReveal(){
+  var els = document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){
+    els.forEach(function(el){ el.classList.add('show'); });
+    document.querySelectorAll('.stat .num').forEach(function(el){
+      el.textContent = el.getAttribute('data-target') + (el.getAttribute('data-suffix')||'');
+    });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        en.target.classList.add('show');
+        var nums = en.target.querySelectorAll('.stat .num');
+        nums.forEach(function(nm){
+          if(nm.dataset.counted) return;
+          nm.dataset.counted = '1';
+          countUp(nm, Number(nm.getAttribute('data-target')), 1300, nm.getAttribute('data-suffix')||'');
+        });
+        io.unobserve(en.target);
+      }
+    });
+  }, {threshold:0.15});
+  els.forEach(function(el){ io.observe(el); });
+}
+
+/* URL 파라미터 로드 + 초기화 */
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  if(params.has('apt')){
+    config.aptName = params.get('apt') || config.aptName;
+    config.managerName = params.get('manager') || config.managerName;
+    config.managerTitle = params.get('title') || config.managerTitle;
+    config.managerPhone = params.get('phone') || config.managerPhone;
+  }
+  applyConfig();
+  calcTax();
+  calcLoan();
+  initReveal();
+})();
+</script>
+</body>
+</html>
