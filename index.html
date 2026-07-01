@@ -59,8 +59,8 @@ body{background:var(--slate-50); color:var(--slate-800); line-height:1.7; -webki
 .grid2{display:grid; grid-template-columns:1fr; gap:18px;}
 @media(min-width:768px){.grid2{grid-template-columns:1fr 1fr;}}
 .field label{display:block; font-size:14px; font-weight:700; color:var(--slate-800); margin-bottom:8px;}
-.field input{width:100%; padding:11px 14px; border:1px solid #cbd5e1; border-radius:10px; background:#fff; font-size:15px; transition:.2s;}
-.field input:focus{outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.12);}
+.field input, .field select{width:100%; padding:11px 14px; border:1px solid #cbd5e1; border-radius:10px; background:#fff; font-size:15px; transition:.2s;}
+.field input:focus, .field select:focus{outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.12);}
 .settings-actions{display:flex; gap:12px; margin-top:22px;}
 .settings-actions .btn{flex:1;}
 
@@ -272,10 +272,9 @@ footer .firm{font-size:21px; font-weight:500; opacity:.9;}
     <h3>설정</h3>
     <div class="grid2">
       <div class="field"><label>아파트명</label><input id="s-apt" type="text"></div>
-      <div class="field"><label>담당자 이름</label><input id="s-name" type="text"></div>
-      <div class="field"><label>담당자 직급</label><input id="s-title" type="text"></div>
-      <div class="field"><label>담당자 휴대폰</label><input id="s-phone" type="tel"></div>
+      <div class="field"><label>담당자</label><select id="s-mgr"></select></div>
     </div>
+    <p style="font-size:13px; color:#64748b; margin-top:10px;">※ 담당자 연락처는 전달 링크에 포함되지 않습니다 (개인정보 보호). 담당자 목록은 파일 상단 <b>MANAGERS</b>에서 관리합니다.</p>
     <div class="settings-actions">
       <button class="btn btn-blue" onclick="saveSettings()">저장</button>
       <button class="btn btn-gray" onclick="toggleSettings()">취소</button>
@@ -490,33 +489,50 @@ footer .firm{font-size:21px; font-weight:500; opacity:.9;}
    비워두면 현재 열려있는 위치(로컬 file:// 포함)를 사용합니다. */
 var BASE_URL = 'https://kingjin77-rgb.github.io/jl-partnership';
 
+/* ▼▼▼ 담당자 목록 — 여기만 실제 정보로 채우세요 (전화번호는 링크에 안 실립니다) ▼▼▼
+   담당자를 추가하려면 { } 를 콤마로 이어서 넣으면 됩니다. */
+var MANAGERS = [
+  { name: '이지훈', title: '변호사', phone: '010-1234-5678' },
+  { name: '김현진', title: '사무장', phone: '010-1234-1234' }
+];
+
 var config = {
   aptName: '교산 푸르지오 더 퍼스트',
-  managerName: '이지훈',
-  managerTitle: '변호사',
-  managerPhone: '010-1234-5678'
+  managerId: 0
 };
+function mgr(){ return MANAGERS[config.managerId] || MANAGERS[0]; }
 
 function applyConfig(){
+  var m = mgr();
   document.getElementById('h-apt').textContent = config.aptName + ' 아파트';
-  document.getElementById('c-title').textContent = config.managerTitle;
-  document.getElementById('c-name').textContent = config.managerName;
-  document.getElementById('c-phone').textContent = config.managerPhone;
+  document.getElementById('c-title').textContent = m.title;
+  document.getElementById('c-name').textContent = m.name;
+  document.getElementById('c-phone').textContent = m.phone;
   document.getElementById('mod-apt-1').textContent = config.aptName;
   document.getElementById('mod-apt-2').textContent = config.aptName;
-  document.getElementById('mod-mgr-1').innerHTML = '담당: ' + config.managerTitle + ' ' + config.managerName + '<br>' + config.managerPhone;
-  var telNum = config.managerPhone.replace(/[^0-9+]/g, '');
+  document.getElementById('mod-mgr-1').innerHTML = '담당: ' + m.title + ' ' + m.name + '<br>' + m.phone;
+  var telNum = m.phone.replace(/[^0-9+]/g, '');
   var ca = document.getElementById('ca-call'); if(ca) ca.href = 'tel:' + telNum;
   var cs = document.getElementById('ca-sms'); if(cs) cs.href = 'sms:' + telNum;
+}
+
+function fillMgrSelect(){
+  var sel = document.getElementById('s-mgr'); if(!sel) return;
+  sel.innerHTML = '';
+  MANAGERS.forEach(function(m, i){
+    var o = document.createElement('option');
+    o.value = i;
+    o.textContent = m.title + ' ' + m.name + ' (' + m.phone + ')';
+    sel.appendChild(o);
+  });
+  sel.value = config.managerId;
 }
 
 function toggleSettings(){
   var p = document.getElementById('settings');
   if(p.style.display === 'none'){
     document.getElementById('s-apt').value = config.aptName;
-    document.getElementById('s-name').value = config.managerName;
-    document.getElementById('s-title').value = config.managerTitle;
-    document.getElementById('s-phone').value = config.managerPhone;
+    fillMgrSelect();
     p.style.display = 'block';
   } else {
     p.style.display = 'none';
@@ -525,9 +541,8 @@ function toggleSettings(){
 
 function saveSettings(){
   config.aptName = document.getElementById('s-apt').value || config.aptName;
-  config.managerName = document.getElementById('s-name').value || config.managerName;
-  config.managerTitle = document.getElementById('s-title').value || config.managerTitle;
-  config.managerPhone = document.getElementById('s-phone').value || config.managerPhone;
+  var mid = parseInt(document.getElementById('s-mgr').value, 10);
+  config.managerId = (!isNaN(mid) && MANAGERS[mid]) ? mid : 0;
   try { localStorage.setItem('jl_config', JSON.stringify(config)); } catch(e){}
   applyConfig();
   document.getElementById('settings').style.display = 'none';
@@ -535,8 +550,8 @@ function saveSettings(){
 
 function buildUrl(){
   var params = new URLSearchParams({
-    a: config.aptName, m: config.managerName,
-    t: config.managerTitle, p: config.managerPhone
+    a: config.aptName,
+    m: String(config.managerId)
   });
   var base = BASE_URL ? BASE_URL : (window.location.origin + window.location.pathname);
   return base + '?' + params.toString();
@@ -565,19 +580,29 @@ function copyShortLink(btn){
   var original = btn ? btn.textContent : '';
   if(btn){ btn.textContent = '⏳ 생성중...'; btn.disabled = true; }
   function restore(){ if(btn){ btn.textContent = original; btn.disabled = false; } }
-  var api = 'https://is.gd/create.php?format=simple&url=' + encodeURIComponent(longUrl);
-  fetch(api).then(function(r){ return r.text(); }).then(function(txt){
-    txt = (txt || '').trim();
-    if(txt.indexOf('https://') === 0){
-      copyText(txt, '짧은 링크가 복사되었습니다! (' + txt + ')');
-    } else {
-      copyText(longUrl, '단축 실패 — 일반 링크를 복사했습니다.');
-    }
-    restore();
-  }).catch(function(){
-    copyText(longUrl, '단축 실패 — 일반 링크를 복사했습니다.');
-    restore();
-  });
+
+  function tryCleanuri(){
+    fetch('https://cleanuri.com/api/v1/shorten', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: 'url=' + encodeURIComponent(longUrl)
+    }).then(function(r){ return r.json(); }).then(function(j){
+      if(j && j.result_url){ copyText(j.result_url, '짧은 링크가 복사되었습니다!'); }
+      else { copyText(longUrl, '링크가 복사되었습니다.'); }
+      restore();
+    }).catch(function(){ copyText(longUrl, '링크가 복사되었습니다.'); restore(); });
+  }
+
+  fetch('https://is.gd/create.php?format=simple&url=' + encodeURIComponent(longUrl))
+    .then(function(r){ return r.text(); }).then(function(txt){
+      txt = (txt || '').trim();
+      if(txt.indexOf('https://') === 0){
+        copyText(txt, '짧은 링크가 복사되었습니다!');
+        restore();
+      } else {
+        tryCleanuri();
+      }
+    }).catch(function(){ tryCleanuri(); });
 }
 
 /* 모달 */
@@ -728,9 +753,8 @@ function initReveal(){
   var A = params.get('a') || params.get('apt');
   if(A){
     config.aptName = A;
-    config.managerName = params.get('m') || params.get('manager') || config.managerName;
-    config.managerTitle = params.get('t') || params.get('title') || config.managerTitle;
-    config.managerPhone = params.get('p') || params.get('phone') || config.managerPhone;
+    var mid = parseInt(params.get('m'), 10);
+    if(!isNaN(mid) && MANAGERS[mid]) config.managerId = mid;
     /* 링크로 받은 사람(입예협)에게는 관리자 버튼 숨김 */
     var tb = document.getElementById('topbar');
     if(tb) tb.style.display = 'none';
@@ -738,7 +762,11 @@ function initReveal(){
     /* 관리자 화면: 지난번 저장한 설정 자동 불러오기 */
     try {
       var saved = localStorage.getItem('jl_config');
-      if(saved){ var o = JSON.parse(saved); for(var k in o){ if(o[k]) config[k] = o[k]; } }
+      if(saved){
+        var o = JSON.parse(saved);
+        if(o.aptName) config.aptName = o.aptName;
+        if(typeof o.managerId === 'number' && MANAGERS[o.managerId]) config.managerId = o.managerId;
+      }
     } catch(e){}
   }
   applyConfig();
